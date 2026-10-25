@@ -1,0 +1,4 @@
+# Vercel only needs the website in public/ and this config.
+/*
+!/public
+!/vercel.json

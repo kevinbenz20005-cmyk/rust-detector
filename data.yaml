@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 1
+names: ['Corrosion']
+
+roboflow:
+  workspace: kevin-benz
+  project: corrosion-yolov8-nuobv
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/kevin-benz/corrosion-yolov8-nuobv/dataset/1

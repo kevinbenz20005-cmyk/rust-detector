@@ -1,0 +1,29 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Dataset (download it from Roboflow, see README)
+/train/
+/valid/
+/test/
+*.cache
+
+# Prediction output (copies of the test images with boxes drawn)
+/runs/detect/predict*/
+
+# Export leftovers (the copy the website uses lives in public/model/)
+/*.onnx
+/runs/**/weights/*.onnx
+
+# Tools and OS files
+.vercel/
+.vscode/
+.idea/
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Local helper script
+push_to_github.bat

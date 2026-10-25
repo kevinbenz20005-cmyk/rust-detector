@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rust Detector</title>
+  <meta name="description" content="Find corrosion on metal surfaces in a photo. A YOLOv10 model runs in your browser, so photos never leave your device.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231B2228'/%3E%3Ccircle cx='15' cy='17' r='7' fill='%239C3F16'/%3E%3Crect x='6' y='8' width='18' height='18' fill='none' stroke='%2319D3E6' stroke-width='2.5'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" crossorigin="anonymous" href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Semi+Condensed:wght@600;700&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <main class="stage" id="stage">
+      <input type="file" id="file" accept="image/*" hidden>
+      <button type="button" class="dropzone" id="dropzone">
+        <span class="dropzone-frame" aria-hidden="true"></span>
+        <span class="dropzone-title">Drop a photo of a metal surface here</span>
+        <span class="dropzone-hint">or click to choose one. JPG, PNG and phone photos all work.</span>
+      </button>
+      <div class="viewer" id="viewer" hidden>
+        <canvas id="canvas" aria-label="Photo with corrosion marked"></canvas>
+        <div class="scanline" id="scanline" hidden></div>
+      </div>
+    </main>
+
+    <aside class="panel">
+      <header class="intro">
+        <h1>Rust detector</h1>
+        <p>Finds corrosion on metal surfaces in a photo. The model runs in your browser, so your photos never leave your device.</p>
+        <p class="status" id="status" role="status"><span class="dot" aria-hidden="true"></span><span id="status-text">Loading model…</span></p>
+      </header>
+
+      <section class="controls" aria-label="Photo">
+        <button type="button" class="btn btn-primary" id="choose">Choose a photo</button>
+        <div class="samples">
+          <p class="label">Or try a photo from the test set</p>
+          <div class="sample-row">
+            <button type="button" class="sample" data-src="samples/sample1.jpg"><img src="samples/sample1.jpg" alt="Rusty pipes clamped to a galvanised pole" width="64" height="64"></button>
+            <button type="button" class="sample" data-src="samples/sample2.jpg"><img src="samples/sample2.jpg" alt="Rusted bolt and washer on concrete" width="64" height="64"></button>
+            <button type="button" class="sample" data-src="samples/sample3.jpg"><img src="samples/sample3.jpg" alt="Rusted threaded pipe plug" width="64" height="64"></button>
+            <button type="button" class="sample" data-src="samples/sample4.jpg"><img src="samples/sample4.jpg" alt="Rust stain spreading across a steel sheet" width="64" height="64"></button>
+          </div>
+        </div>
+        <label class="slider">
+          <span class="label">Minimum confidence <output id="conf-out">25%</output></span>
+          <input type="range" id="conf" min="5" max="95" step="5" value="25">
+        </label>
+      </section>
+
+      <section class="results" id="results" aria-live="polite" hidden>
+        <h2 id="count">No corrosion found</h2>
+        <p class="meta" id="meta"></p>
+        <ol class="det-list" id="det-list"></ol>
+        <button type="button" class="btn" id="download">Download marked photo</button>
+      </section>
+
+      <footer class="about">
+        <h2>About the model</h2>
+        <p>YOLOv10s fine-tuned for 30 epochs on 1,656 labelled corrosion photos. On the validation set it reaches 94% precision, 82% recall and 0.89 mAP@50.</p>
+        <p><a href="https://universe.roboflow.com/kevin-benz/corrosion-yolov8-nuobv">Dataset on Roboflow</a> (CC BY 4.0) <span aria-hidden="true">/</span> <a href="https://github.com/kevinbenz20005-cmyk/rust-detector">Source on GitHub</a></p>
+      </footer>
+    </aside>
+  </div>
+
+  <script src="ort/ort.wasm.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

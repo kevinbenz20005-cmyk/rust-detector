@@ -1,0 +1,3 @@
+ultralytics>=8.4.187
+onnx
+onnxslim
